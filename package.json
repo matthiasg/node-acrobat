@@ -1,0 +1,22 @@
+{
+  "name": "acrobat",
+  "version": "0.0.0",
+  "description": "Acrobat Reader --- Command Line Wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthiasg/node-acrobat.git"
+  },
+  "keywords": [
+    "acrobat",
+    "reader",
+    "windows"
+  ],
+  "author": "Matthias Goetzke",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "e46bcfb3feda7e41c8a4e5a20f6b066e87f2dbca"
+}
