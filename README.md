@@ -16,7 +16,9 @@ I needed this in order to print/show the output from the awesome http://jspdf.co
     acrobat.printPreview('file.pdf')
 
     // print the pdf to the defined printer
+    acrobat.print('file.pdf');
     acrobat.print('file.pdf', "<printername>", "<drivername>", "<portname>");
+
 
     // callbacks are possible
     acrobat.printPreview('file.pdf', function(err){
@@ -24,8 +26,10 @@ I needed this in order to print/show the output from the awesome http://jspdf.co
           return console.log("error opening file:", err);
         }
 
-        console.log("opened file and reader closed now");
+        console.log("opened file");
       })
+
+**Note**: Options not implemented yet
 
 The commands **open** and **printPreview** have extra options:
 

@@ -11,20 +11,23 @@ module.exports = {
     if(!options)
       options = {}
 
-    args = [path];
+    var args = ['/s',path];
     launchAcrobat(args, options, cb);
   },
   print: function(path, options, cb){
     if(isFunction(options)){
       cb = options;options = {};
     }
+
+    var args = ['/h','/p',path];
+    launchAcrobat(args, options, cb);
   },
   printPreview: function(path, options, cb){
     if(isFunction(options)){
       cb = options;options = {};
     }
 
-    args = ['/p',path];
+    var args = ['/s','/p',path];
     launchAcrobat(args, options, cb);
   },
   findReader: findReader,
