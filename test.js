@@ -29,6 +29,3 @@ var file = path.join(__dirname, 'test', 'test.pdf' );
 acrobat.printPreview( file, function(err){
   console.log('done')
 });
-
-
-

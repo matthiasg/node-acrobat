@@ -7,9 +7,11 @@ module.exports = {
   open: function(path, options, cb){
     if(isFunction(options)){
       cb = options;options = {};
-    }
+    } 
+    if(!options)
+      options = {}
 
-    args = ['"'+path+'"'];
+    args = [path];
     launchAcrobat(args, options, cb);
   },
   print: function(path, options, cb){
@@ -22,7 +24,7 @@ module.exports = {
       cb = options;options = {};
     }
 
-    args = ['/p','"'+path+'"'];
+    args = ['/p',path];
     launchAcrobat(args, options, cb);
   },
   findReader: findReader,
@@ -39,8 +41,9 @@ function launchAcrobat(args, options, cb){
     findReader(function(err,readerPath){
       if(err)
         return cb(err);
-      console.log('"'+readerPath+'"' + ' ' + args.join(' '));
-      child.exec(readerPath + ' ' + args.join(' '), {}, cb);
+      //console.log('"'+readerPath+'"' + ' ' + args.join(' '));
+      console.log(args)
+      var c = child.execFile(readerPath, args, {encoding: 'utf8',timeout: 0}, cb);
     })
   }
 }
