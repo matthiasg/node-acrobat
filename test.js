@@ -26,6 +26,8 @@ acrobat.findReader(function(err,path){
 
 var file = path.join(__dirname, 'test', 'test.pdf' );
 //acrobat.open( file );
+acrobat.printPreview( file );
+
 acrobat.printPreview( file, function(err){
   console.log('done')
 });

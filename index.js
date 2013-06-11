@@ -5,28 +5,14 @@ var child = require('child_process');
 module.exports = {
 
   open: function(path, options, cb){
-    if(isFunction(options)){
-      cb = options;options = {};
-    } 
-    if(!options)
-      options = {}
-
     var args = ['/s',path];
     launchAcrobat(args, options, cb);
   },
   print: function(path, options, cb){
-    if(isFunction(options)){
-      cb = options;options = {};
-    }
-
     var args = ['/h','/p',path];
     launchAcrobat(args, options, cb);
   },
   printPreview: function(path, options, cb){
-    if(isFunction(options)){
-      cb = options;options = {};
-    }
-
     var args = ['/s','/p',path];
     launchAcrobat(args, options, cb);
   },
@@ -37,6 +23,14 @@ module.exports = {
 }
 
 function launchAcrobat(args, options, cb){
+
+  if(isFunction(options)){
+    cb = options;options = {};
+  } 
+
+  if(!options)
+    options = {}
+
   var readerPath = options.path;
   if( readerPath ) {
     child.execFile(readerPath, args, options, cb);
