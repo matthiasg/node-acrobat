@@ -21,12 +21,12 @@ acrobat.findReader(function(err,path){
   assert(err===null);
   assert(path.indexOf('AcroRd32.exe') > 0);
   console.log(path)
-  child.execFile(path);
+  //child.execFile(path);
 });
 
 var file = path.join(__dirname, 'test', 'test.pdf' );
 //acrobat.open( file );
-acrobat.printPreview( file );
+//acrobat.printPreview( file );
 
 acrobat.printPreview( file, function(err){
   console.log('done')

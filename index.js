@@ -31,18 +31,39 @@ function launchAcrobat(args, options, cb){
   if(!options)
     options = {}
 
+
   var readerPath = options.path;
+
   if( readerPath ) {
     child.execFile(readerPath, args, options, cb);
   } else {
     findReader(function(err,readerPath){
       if(err)
         return cb(err);
-      //console.log('"'+readerPath+'"' + ' ' + args.join(' '));
+
+      console.log('"'+readerPath+'"' + ' ' + args.join(' '));
       console.log(args)
-      var c = child.execFile(readerPath, args, {encoding: 'utf8',timeout: 0}, cb);
+
+      var process  = child.spawn(readerPath, args, {encoding: 'utf8', detached:true, stdio:'ignore'});
+      process.unref()
+
+      if(cb)
+        cb();
     })
   }
+}
+
+function makeCmdCall(exePath,args){
+
+  var commandPath = "start";
+  var commandPrefixOptions = ['/b','"acrobat"','cmd','/c']
+
+  args.splice(0,0,exePath);
+  for (var i = commandPrefixOptions.length - 1; i >= 0; i--) {
+    args.splice(0,0,commandPrefixOptions[i]);
+  };
+
+  return commandPath;
 }
 
 function isFunction(functionToCheck) {

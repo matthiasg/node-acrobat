@@ -45,6 +45,7 @@ The options **new**, **noSplash**, **hidden** are converted to the respective co
 All other options are added to the command line /A switch, as described http://www.robvanderwoude.com/commandlineswitches.php#Acrobat and http://stackoverflow.com/questions/619158/adobe-reader-command-line-reference.
 
 
+
 Which Exe ?
 -----------
 
