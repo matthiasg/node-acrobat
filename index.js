@@ -29,13 +29,18 @@ function launchAcrobat(args, options, cb){
   } 
 
   if(!options)
-    options = {}
+    options = {};
 
-
-  var readerPath = options.path;
+  addActions(options,args);
+  
+  var readerPath = options.adobePath;
 
   if( readerPath ) {
-    child.execFile(readerPath, args, options, cb);
+    console.log('"'+readerPath+'"' + ' ' + args.join(' '));
+    var process  = child.spawn(readerPath, args, {encoding: 'utf8', detached:true, stdio:'ignore'});
+    process.unref()
+
+    if(cb) cb();
   } else {
     findReader(function(err,readerPath){
       if(err)
@@ -52,6 +57,56 @@ function launchAcrobat(args, options, cb){
     })
   }
 }
+
+function addActions(options,args){
+  var openActions = buildOpenActions(options);
+
+  if(openActions.length > 0){
+    args.unshift(openActions);
+    args.unshift('/A');
+  }
+}
+
+function buildOpenActions(options){
+  console.log('buildOptions',options)
+  
+  var optionsString = '';
+
+  var OpenActionsOptionNames = 'zoom,navpanes,page,nameddest,comment,view,viewrect,pagemode,scrollbar,toolbar,statusbar,messages,navpanes,highlight,help,fdf'.split(',');
+  var optionActions = buildOptions(OpenActionsOptionNames,options);
+
+  if(optionActions.length>0)
+    optionsString += optionActions + '=OpenActions';
+
+  var ExtraOptionNames = 'search'.split(',');
+  var extraOptions = buildOptions(ExtraOptionNames,options);
+
+  if(extraOptions.length>0) {
+    if(optionsString.length === 0)
+      optionsString += '=OpenActions';
+    optionsString += '&' + extraOptions;
+  }
+
+  return optionsString;
+}
+
+
+function buildOptions(optionsNames,options){
+  var optionsString = '';
+  for (var i = 0; i < optionsNames.length; i++) {
+    var optionName = optionsNames[i];
+    
+    var value = options[optionName];
+    if(value==null)
+      continue;
+
+    if(optionsString.length>0)
+      optionsString += '&';
+    optionsString += optionName + '=' + value.toString();
+  }  
+  return optionsString;
+}
+
 
 function makeCmdCall(exePath,args){
 
@@ -118,7 +173,6 @@ function findReaderFolders(cb){
   fs.exists(adobeBasePath, function(exists){
     if(!exists)
       return cb("No ProgramFiles/ProgramFiles(x86) folder found")
-
 
     fs.readdir( adobeBasePath, function(err,files){
       if(err)

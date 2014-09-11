@@ -49,12 +49,13 @@ All other options are added to the command line /A switch, as described http://w
 Which Exe ?
 -----------
 
-Finding the right exe is actually the most difficult part of it. On windows it looks through Program Files folder automatically (see below) but it can be overwritten using the option 'exe' as in:
+Finding the right exe is actually the most difficult part of it. On windows it looks through Program Files folder automatically (see below) but it can be overwritten using the option 'adobePath' as in:
 
-     acrobat.open('file.pdf', {path:'<full path to executable>'});
+     acrobat.open('file.pdf', {adobePath:'<full path to executable>'});
 
 ### Automatic search
 
 On windows it first looks in the ProgramFiles(x86)\Adobe folder (as set in process.env) then in ProgramFiles\Adobe.
 
 Underneath that it looks for the highest installed version of "Reader x" it can find.
+
