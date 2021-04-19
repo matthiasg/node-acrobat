@@ -59,6 +59,10 @@ function launchAcrobat(args, options, cb){
 }
 
 function addActions(options,args){
+  if (options.new) {
+    args.unshift("/n");
+  }
+
   var openActions = buildOpenActions(options);
 
   if(openActions.length > 0){
@@ -161,7 +165,10 @@ function findHighestVersion(folders){
 }
 
 function getVersion(name){
-  var hi =  name.match(/Reader\s+(\d+\.{0,}\d*).*/);
+  var hi = name.match(/Reader\s+(\d+\.{0,}\d*).*/);
+  if (!hi && name.toLowerCase().includes("reader dc")) {
+    hi = "12";
+  }
 
   return parseFloat(hi[1]);
 }
@@ -169,10 +176,11 @@ function getVersion(name){
 function findReaderFolders(cb){
   var programsBasePath = process.env['ProgramFiles(x86)'] || process.env['ProgramFiles'];
   var adobeBasePath = path.join(programsBasePath, 'Adobe');
+  console.log(`Adobe Base Path: ${adobeBasePath}`)
 
-  fs.exists(adobeBasePath, function(exists){
-    if(!exists)
-      return cb("No ProgramFiles/ProgramFiles(x86) folder found")
+  fs.access(adobeBasePath, function(err){
+    if(err)
+      return cb(err);
 
     fs.readdir( adobeBasePath, function(err,files){
       if(err)
@@ -181,7 +189,16 @@ function findReaderFolders(cb){
       var folders = filterReaderFolders(files);
       for (var i = 0; i < folders.length; i++) {
         folders[i] = path.join(adobeBasePath, folders[i]);
-      };
+
+        fs.readdir(folders[i], function(innerError, innerFiles) {
+          if (!innerError) {
+            var innerFolders = filterReaderFolders(innerFiles);
+            for (var j = 0; j < innerFolders.length; j++) {
+              folders = folders.concat(path.join(folders[i], innerFolders[j]));
+            }
+          }
+        });
+      }
 
       cb(null, folders);
     });
@@ -200,6 +217,6 @@ function filterReaderFolders(names){
 }
 
 function isReaderFolder(folderName){
-  return folderName.toLowerCase().indexOf('reader') === 0;
+  return folderName.toLowerCase().includes("reader");
 }
 

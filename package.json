@@ -1,6 +1,6 @@
 {
   "name": "acrobat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Acrobat Reader --- Command Line Wrapper",
   "main": "index.js",
   "scripts": {
